@@ -104,7 +104,7 @@ class Search{
 		}
 		
 		/*FOR INTERFACES*/
-		$query = "SELECT Devices.device_id, Devices.archived, Devices.name, interface_device, interface_id, interface_name, interface_descr, interface_alias FROM interfaces, Devices WHERE Devices.device_id = interfaces.interface_device AND (interface_name LIKE '".$keyword."' || interface_descr LIKE '".$keyword."' || interface_alias LIKE '".$keyword."') ORDER BY interface_name";
+		$query = "SELECT Devices.device_id, Devices.archived, Devices.name, interface_device, interface_id, interface_name, interface_descr, interface_alias FROM interfaces, Devices WHERE Devices.device_id = interfaces.interface_device AND interfaces.active = '1' AND (interface_name LIKE '".$keyword."' || interface_descr LIKE '".$keyword."' || interface_alias LIKE '".$keyword."') ORDER BY interface_name";
 		$result = mysql_query($query) or die('Error, query failed. ' . mysql_error());
 		
 		if (!$result)  {
@@ -116,7 +116,7 @@ class Search{
 			array_push($this->intResults, $obj);
 		}
 		
-		$query = "SELECT * FROM interface_IPaddresses, interfaces, Devices WHERE interface_IPaddresses.device_id = Devices.device_id AND Devices.device_id = interfaces.interface_device AND interface_IPaddresses.if_index = interfaces.disc_interface_index AND interface_IPaddresses.inet_address LIKE '".$keyword."' ORDER BY interface_name";
+		$query = "SELECT * FROM interface_IPaddresses, interfaces, Devices WHERE interface_IPaddresses.device_id = Devices.device_id AND Devices.device_id = interfaces.interface_device AND interface_IPaddresses.if_index = interfaces.disc_interface_index AND interfaces.active = '1' AND interface_IPaddresses.inet_address LIKE '".$keyword."' ORDER BY interface_name";
 		$result = mysql_query($query) or die('Error, query failed. ' . mysql_error());
 		
 		if (!$result)  {
@@ -139,7 +139,7 @@ class Search{
 			array_push($this->conResults, $obj);
 		}
 		
-		$query = "SELECT * FROM contacts WHERE (name_first LIKE '".$keyword."' || name_middle LIKE '".$keyword."' || name_last LIKE '".$keyword."' || country LIKE '".$keyword."' || province LIKE '".$keyword."' || city LIKE '".$keyword."' || addr_line1 LIKE '".$keyword."' || addr_line2 LIKE '".$keyword."' || zipcode LIKE '".$keyword."' || phone1 LIKE '".$keyword."' || phone2 LIKE '".$keyword."' || phone_cell LIKE '".$keyword."' || phone_pager LIKE '".$keyword."' || phone_fax LIKE '".$keyword."' || email LIKE '".$keyword."' || notes LIKE '".$keyword."' || external_id1 LIKE '".$keyword."' || external_id2 LIKE '".$keyword."' || external_id3 LIKE '".$keyword."') ORDER BY name_last";
+		$query = "SELECT * FROM contacts WHERE (name_first LIKE '".$keyword."' || name_middle LIKE '".$keyword."' || name_last LIKE '".$keyword."' || CONCAT(name_first, ' ', name_last) LIKE '".$keyword."' || country LIKE '".$keyword."' || province LIKE '".$keyword."' || city LIKE '".$keyword."' || addr_line1 LIKE '".$keyword."' || addr_line2 LIKE '".$keyword."' || zipcode LIKE '".$keyword."' || phone1 LIKE '".$keyword."' || phone2 LIKE '".$keyword."' || phone_cell LIKE '".$keyword."' || phone_pager LIKE '".$keyword."' || phone_fax LIKE '".$keyword."' || email LIKE '".$keyword."' || notes LIKE '".$keyword."' || external_id1 LIKE '".$keyword."' || external_id2 LIKE '".$keyword."' || external_id3 LIKE '".$keyword."') ORDER BY name_last";
 		$result = mysql_query($query) or die('Error, query failed. ' . mysql_error());
 		
 		if (!$result)  {
